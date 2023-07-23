@@ -37,6 +37,9 @@ Function Get-MonitorResolution {
 .EXAMPLE
     (Get-ConnectedMonitors) - 1 | Get-MonitorResolution
 
+.EXAMPLE
+    (Get-MonitorResolution -MonitorID 0).Width
+
 .OUTPUTS
     PSCustomObject
 
