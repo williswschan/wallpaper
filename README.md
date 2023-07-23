@@ -1,4 +1,4 @@
-Set individual monitor's wallpaper. The function makes use of .Net IDesktopWallper COM object which capable of setting wallpaper for each monitor separately.
+### Set individual monitor's wallpaper. The function makes use of .Net IDesktopWallper COM object which capable of setting wallpaper for each monitor separately.
 
 Key files are "Function.ps1" & "Wallpaper.dll", recommended to place in same directory.
 "Wallpaper.cs" & "Wallpaper.csproj" are optional, these are source code and VS code config file for reference or compile DLL in case of necessary.
