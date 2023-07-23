@@ -10,15 +10,9 @@ Set-Wallpaper
 
 Detail usage may use "get-help Set-Wallpaper -Full" for detail.
 
-### PS - Module requires .net framework 4.8.1 or above.
+PS - Module requires .net framework 4.8.1 or above.
 
-
-
-
-
-
-
-Sample usage, alternatively may refer to Set-Wallpapers.ps1;
+### Sample usage, alternatively may refer to Set-Wallpapers.ps1;
 ```
 . $PSScriptRoot\Functions.ps1
 
