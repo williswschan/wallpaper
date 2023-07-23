@@ -5,7 +5,7 @@ Key files are "Function.ps1" & "Wallpaper.dll", recommended to place in same dir
 
 Run ". .\Functions.ps1" at powershell command prompt, required module will be import and following PS functions will be available.
 | Functions |
-|----|
+|:----|
 | Get-Monitors |
 | Get-MonitorResolution |
 | Set-Wallpaper |
