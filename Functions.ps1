@@ -59,37 +59,46 @@ Function Get-Wallpaper {
         [int]$MonitorID
     )
 
-    $Name = ([NOM.Wallpaper]::GetWallpaper($MonitorID)[0]).ToString() + "x" + ([NOM.Wallpaper]::GetWallpaper($MonitorID)[1]).ToString()
-    [int] $Width = [NOM.Wallpaper]::GetWallpaper($MonitorID)[0]
-    [int] $Height = [NOM.Wallpaper]::GetWallpaper($MonitorID)[1]
-    $AspectRatio = [math]::Round([NOM.Wallpaper]::GetWallpaper($MonitorID)[0] / [NOM.Wallpaper]::GetWallpaper($MonitorID)[1],2)
-    $Wallpaper = [NOM.Wallpaper]::GetWallpaper($MonitorID)[2]
-    $Position = [NOM.Wallpaper]::GetWallpaper($MonitorID)[3]
-    $MonitorDevicePathCount = [NOM.Wallpaper]::GetWallpaper($MonitorID)[4]
+    If ($MonitorID -le $(Get-ConnectedMonitors) - 1) {
+        try {
+            $Name = ([NOM.Wallpaper]::GetWallpaper($MonitorID)[0]).ToString() + "x" + ([NOM.Wallpaper]::GetWallpaper($MonitorID)[1]).ToString()
+            [int] $Width = [NOM.Wallpaper]::GetWallpaper($MonitorID)[0]
+            [int] $Height = [NOM.Wallpaper]::GetWallpaper($MonitorID)[1]
+            $AspectRatio = [math]::Round([NOM.Wallpaper]::GetWallpaper($MonitorID)[0] / [NOM.Wallpaper]::GetWallpaper($MonitorID)[1],2)
+            $Wallpaper = [NOM.Wallpaper]::GetWallpaper($MonitorID)[2]
+            $Position = [NOM.Wallpaper]::GetWallpaper($MonitorID)[3]
+            $MonitorDevicePathCount = [NOM.Wallpaper]::GetWallpaper($MonitorID)[4]
 
-    $AspectRatio = $AspectRatio.ToString()
+            $AspectRatio = $AspectRatio.ToString()
     
-    $AspectRatio = switch ($AspectRatio) {
-        "1.78"  {"16:9"; break}
-        "1.6"  {"16:10"; break}        
-        "1.33"   {"4:3"; break}
-        "1.5"   {"3:2"; break}
-        "2.33" {"21:9"; break}
-        "3.56"  {"32:9"; break}
-        default {"Unknown"; break}
-    }
+            $AspectRatio = switch ($AspectRatio) {
+                "1.78"  {"16:9"; break}
+                "1.6"  {"16:10"; break}        
+                "1.33"   {"4:3"; break}
+                "1.5"   {"3:2"; break}
+                "2.33" {"21:9"; break}
+                "3.56"  {"32:9"; break}
+                default {"Unknown"; break}
+            }
 
-    $MonitorResolution = [PSCustomObject]@{
-        Name = $Name
-        Width = $Width
-        Height = $Height
-        AspectRatio = $AspectRatio
-        Wallpaper = $Wallpaper
-        Position = $Position
-        MonitorDevicePathCount = $MonitorDevicePathCount
-    }
+            $MonitorResolution = [PSCustomObject]@{
+                Name = $Name
+                Width = $Width
+                Height = $Height
+                AspectRatio = $AspectRatio
+                Wallpaper = $Wallpaper
+                Position = $Position
+                MonitorDevicePathCount = $MonitorDevicePathCount
+            }
 
-    $MonitorResolution
+            $MonitorResolution
+        }
+        catch {
+            Write-Error $Error[0]
+        } 
+    } else {
+        Write-Host -ForegroundColor Red "MonitorID greater than connected monitor(s)."
+    }
 }
 
 Function Set-Wallpaper {
@@ -143,21 +152,21 @@ Function Set-Wallpaper {
 }
 
 Function Reset-Wallpaper {
-    <#
-    .SYNOPSIS
-        Reset wallpaper setting saved in roaming profile.
+<#
+.SYNOPSIS
+    Reset wallpaper setting saved in roaming profile.
     
-    .DESCRIPTION
-        Reset wallpaper setting saved in roaming profile. This will ensure wallpaper change will be effective immediately.
+.DESCRIPTION
+    Reset wallpaper setting saved in roaming profile. This will ensure wallpaper change will be effective immediately.
     
-    .EXAMPLE
-         Reset-Wallpaper
+.EXAMPLE
+    Reset-Wallpaper
     
-    .NOTES
-        Author:  Willis Chan
-        Website: https://github.com/williswschan/wallpaper
-    #>
-    
-        [NOM.Wallpaper]::ResetWallpaper("")
-    
-    }
+.NOTES
+    Author:  Willis Chan
+    Website: https://github.com/williswschan/wallpaper
+#>
+
+    [NOM.Wallpaper]::ResetWallpaper("")
+ 
+}
