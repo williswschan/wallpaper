@@ -65,6 +65,7 @@ Function Get-Wallpaper {
     $AspectRatio = [math]::Round([NOM.Wallpaper]::GetWallpaper($MonitorID)[0] / [NOM.Wallpaper]::GetWallpaper($MonitorID)[1],2)
     $Wallpaper = [NOM.Wallpaper]::GetWallpaper($MonitorID)[2]
     $Position = [NOM.Wallpaper]::GetWallpaper($MonitorID)[3]
+    $MonitorDevicePathCount = [NOM.Wallpaper]::GetWallpaper($MonitorID)[4]
 
     $AspectRatio = $AspectRatio.ToString()
     
@@ -85,6 +86,7 @@ Function Get-Wallpaper {
         AspectRatio = $AspectRatio
         Wallpaper = $Wallpaper
         Position = $Position
+        MonitorDevicePathCount = $MonitorDevicePathCount
     }
 
     $MonitorResolution
@@ -117,7 +119,7 @@ Function Set-Wallpaper {
         [Parameter(ValueFromPipeline, HelpMessage="Enter the desired postion. Available values are Center, Tile, Stretch(Default if omitted), Fit, Fill, Span.")]
         [string]$Position = "Stretch" 
     )
-
+<#
     If ($MonitorID -le $(Get-ConnectedMonitors)) {
         try {
             [NOM.Wallpaper]::SetWallpaper($MonitorID, $WallpaperFilePath, $Position) | Out-Null
@@ -128,4 +130,6 @@ Function Set-Wallpaper {
     } else {
         Write-Host -ForegroundColor Red "MonitorID greater than connected monitor(s)."
     }
+#>    
+    [NOM.Wallpaper]::SetWallpaper($MonitorID, $WallpaperFilePath, $Position)
 }
