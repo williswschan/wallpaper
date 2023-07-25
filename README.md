@@ -19,6 +19,8 @@ Detail usage may use "get-help Set-Wallpaper -Full" for detail.
 ```
 . $PSScriptRoot\Functions.ps1
 
+Reset-Wallpaper
+
 For ($MonitorID = 0; $MonitorID -le $((Get-ConnectedMonitors) - 1); $MonitorID++) {
 
     $WallpaperDirectory = "C:\Windows\Web\4K\Wallpaper\Windows"
