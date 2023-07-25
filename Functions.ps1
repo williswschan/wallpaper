@@ -119,8 +119,8 @@ Function Set-Wallpaper {
         [Parameter(ValueFromPipeline, HelpMessage="Enter the desired postion. Available values are Center, Tile, Stretch(Default if omitted), Fit, Fill, Span.")]
         [string]$Position = "Stretch" 
     )
-<#
-    If ($MonitorID -le $(Get-ConnectedMonitors)) {
+
+    If ($MonitorID -le $(Get-ConnectedMonitors) - 1) {
         try {
             [NOM.Wallpaper]::SetWallpaper($MonitorID, $WallpaperFilePath, $Position) | Out-Null
         }
@@ -130,11 +130,34 @@ Function Set-Wallpaper {
     } else {
         Write-Host -ForegroundColor Red "MonitorID greater than connected monitor(s)."
     }
-#>
+
+<#
     try {
         [NOM.Wallpaper]::SetWallpaper($MonitorID, $WallpaperFilePath, $Position) | Out-Null
     }
     catch {
         Write-Error $Error[0]
-    }            
+    }     
+#>  
+
 }
+
+Function Reset-Wallpaper {
+    <#
+    .SYNOPSIS
+        Reset wallpaper setting saved in roaming profile.
+    
+    .DESCRIPTION
+        Reset wallpaper setting saved in roaming profile. This will ensure wallpaper change will be effective immediately.
+    
+    .EXAMPLE
+         Reset-Wallpaper
+    
+    .NOTES
+        Author:  Willis Chan
+        Website: https://github.com/williswschan/wallpaper
+    #>
+    
+        [NOM.Wallpaper]::ResetWallpaper("")
+    
+    }

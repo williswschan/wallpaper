@@ -6,17 +6,6 @@ using System.Collections.Generic;
 
 namespace NOM
 {
-    public class WallpaperAll   //  method to make the change effective immediately 
-    {
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
-
-        public static void SetWallpaper(string path)
-        {
-            SystemParametersInfo(20, 0, path, 3);   // Writes the new system-wide parameter setting to the user profile.
-        }
-    }
-
     public class DesktopWallpaper
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -110,16 +99,12 @@ namespace NOM
             DesktopWallpaper.IDesktopWallpaper wallpaper = DesktopWallpaper.WallpaperWrapper.CreateInstance();
             DesktopWallpaper.DesktopWallpaperPosition wallpaperPosition;
             Enum.TryParse(position, out wallpaperPosition);
-            if (monitorID <= (wallpaper.GetMonitorDevicePathCount() - 1))
+            if (monitorID <= wallpaper.GetMonitorDevicePathCount())
             {
                 string monitor = wallpaper.GetMonitorDevicePathAt(monitorID);
                 wallpaper.SetWallpaper(monitor, path);
+                wallpaper.SetPosition(wallpaperPosition);   // wallpaper.SetPosition(DesktopWallpaper.DesktopWallpaperPosition.Fill)
             }
-            else
-            {
-                WallpaperAll.SetWallpaper(path);
-            }
-            wallpaper.SetPosition(wallpaperPosition);   // wallpaper.SetPosition(DesktopWallpaper.DesktopWallpaperPosition.Fill)
             Marshal.ReleaseComObject(wallpaper);
         }
 
@@ -140,6 +125,14 @@ namespace NOM
         public static int GetConnectedMonitors()    // method to getmonitors
         {
             return Screen.AllScreens.Length;
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+
+        public static void ResetWallpaper(string path)  // method to make wallpaper change immediately.
+        {
+            SystemParametersInfo(20, 0, path, 3);   // Writes the new system-wide parameter setting to the user profile.
         }
     }
 }
