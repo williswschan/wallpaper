@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace NOM
 {
-    public class WallpaperAll   //  Included RDP session.
+    public class WallpaperAll   //  method to make the change effective immediately 
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
@@ -110,7 +110,7 @@ namespace NOM
             DesktopWallpaper.IDesktopWallpaper wallpaper = DesktopWallpaper.WallpaperWrapper.CreateInstance();
             DesktopWallpaper.DesktopWallpaperPosition wallpaperPosition;
             Enum.TryParse(position, out wallpaperPosition);
-            if (monitorID <= wallpaper.GetMonitorDevicePathCount())
+            if (monitorID <= (wallpaper.GetMonitorDevicePathCount() - 1))
             {
                 string monitor = wallpaper.GetMonitorDevicePathAt(monitorID);
                 wallpaper.SetWallpaper(monitor, path);
