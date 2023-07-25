@@ -1,4 +1,8 @@
-Import-Module -Name $PSScriptRoot   # Import all moduel in the desired directory.
+if ([System.IO.File]::Exists("$($PSScriptRoot)\bin\Debug\net481\Wallpaper.dll")) {
+    Import-Module -Name "$($PSScriptRoot)\bin\Debug\net481\Wallpaper.dll"
+} else {
+    Import-Module -Name $PSScriptRoot   # Import all moduel in the desired directory.
+}
 
 Function Get-ConnectedMonitors {
 <#
@@ -23,7 +27,7 @@ Function Get-ConnectedMonitors {
 
 }
 
-Function Get-MonitorResolution {
+Function Get-Wallpaper {
 <#
 .SYNOPSIS
     Return monitor's properties such as width, height and aspect ratio...etc information.
@@ -32,13 +36,13 @@ Function Get-MonitorResolution {
     Return monitor's properties such as width, height and aspect ratio...etc information, please notice that value of "MonitorID" should stars from 0.
 
 .EXAMPLE
-    Get-MonitorResolution -MonitorID 0
+    Get-Wallpaper -MonitorID 0
 
 .EXAMPLE
-    (Get-ConnectedMonitors) - 1 | Get-MonitorResolution
+    (Get-ConnectedMonitors) - 1 | Get-Wallpaper
 
 .EXAMPLE
-    (Get-MonitorResolution -MonitorID 0).Width
+    (Get-Wallpaper -MonitorID 0).Width
 
 .OUTPUTS
     PSCustomObject
@@ -55,10 +59,12 @@ Function Get-MonitorResolution {
         [int]$MonitorID
     )
 
-    $Name = ([NOM.Wallpaper]::GetMonitorResolution($MonitorID)[0]).ToString() + "x" + ([NOM.Wallpaper]::GetMonitorResolution($MonitorID)[1]).ToString()
-    $Width = [NOM.Wallpaper]::GetMonitorResolution($MonitorID)[0]
-    $Height = [NOM.Wallpaper]::GetMonitorResolution($MonitorID)[1]
-    $AspectRatio = [math]::Round([NOM.Wallpaper]::GetMonitorResolution($MonitorID)[0] / [NOM.Wallpaper]::GetMonitorResolution($MonitorID)[1],2)
+    $Name = ([NOM.Wallpaper]::GetWallpaper($MonitorID)[0]).ToString() + "x" + ([NOM.Wallpaper]::GetWallpaper($MonitorID)[1]).ToString()
+    [int] $Width = [NOM.Wallpaper]::GetWallpaper($MonitorID)[0]
+    [int] $Height = [NOM.Wallpaper]::GetWallpaper($MonitorID)[1]
+    $AspectRatio = [math]::Round([NOM.Wallpaper]::GetWallpaper($MonitorID)[0] / [NOM.Wallpaper]::GetWallpaper($MonitorID)[1],2)
+    $Wallpaper = [NOM.Wallpaper]::GetWallpaper($MonitorID)[2]
+    $Position = [NOM.Wallpaper]::GetWallpaper($MonitorID)[3]
 
     $AspectRatio = $AspectRatio.ToString()
     
@@ -77,6 +83,8 @@ Function Get-MonitorResolution {
         Width = $Width
         Height = $Height
         AspectRatio = $AspectRatio
+        Wallpaper = $Wallpaper
+        Position = $Position
     }
 
     $MonitorResolution
