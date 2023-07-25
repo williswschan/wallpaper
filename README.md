@@ -7,7 +7,7 @@ Run ". .\Functions.ps1" at powershell command prompt, required module will be im
 | Functions |
 |:----|
 | Get-Monitors |
-| Get-MonitorResolution |
+| Get-Wallpaper |
 | Set-Wallpaper |
 
 Detail usage may use "get-help Set-Wallpaper -Full" for detail.
