@@ -9,6 +9,7 @@ Run ". .\Functions.ps1" at powershell command prompt, required module will be im
 | Get-Monitors |
 | Get-Wallpaper |
 | Set-Wallpaper |
+| Reset-Wallpaper |
 
 Detail usage may use "get-help Set-Wallpaper -Full" for detail.
 
