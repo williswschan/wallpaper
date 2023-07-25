@@ -130,6 +130,11 @@ Function Set-Wallpaper {
     } else {
         Write-Host -ForegroundColor Red "MonitorID greater than connected monitor(s)."
     }
-#>    
-    [NOM.Wallpaper]::SetWallpaper($MonitorID, $WallpaperFilePath, $Position)
+#>
+    try {
+        [NOM.Wallpaper]::SetWallpaper($MonitorID, $WallpaperFilePath, $Position) | Out-Null
+    }
+    catch {
+        Write-Error $Error[0]
+    }            
 }
