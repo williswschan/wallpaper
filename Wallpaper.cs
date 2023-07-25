@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace NOM
 {
-
     public class WallpaperAll   //  Included RDP session.
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -20,6 +19,29 @@ namespace NOM
 
     public class DesktopWallpaper
     {
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Rect
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+        public enum DesktopSlideshowOptions // An enum is a special "class" that represents a group of constants (unchangeable/read-only variables).
+        {
+            ShuffleImages = 0x01
+        }
+        public enum DesktopSlideshowState
+        {
+            Enabled = 0x01,
+            Slideshow = 0x02,
+            DisabledByRemoteSession = 0x04
+        }
+        public enum DesktopSlideshowDirection
+        {
+            Forward = 0,
+            Backward = 1
+        }        
         public enum DesktopWallpaperPosition
         {
             Center = 0, // may see the screen border
@@ -34,15 +56,39 @@ namespace NOM
         public interface IDesktopWallpaper  // interface class, members of an interface are abstract and public.
         {
             void SetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string monitorID, [MarshalAs(UnmanagedType.LPWStr)] string wallpaper);
+
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetWallpaper([MarshalAs(UnmanagedType.LPWStr)] string monitorID);  // reference by get wallpaper file path
+
             [return: MarshalAs(UnmanagedType.LPWStr)]
             string GetMonitorDevicePathAt(uint monitorIndex);
+
             [return: MarshalAs(UnmanagedType.U4)]
             uint GetMonitorDevicePathCount();
+
+            [return: MarshalAs(UnmanagedType.Struct)]
+            Rect GetMonitorRECT([MarshalAs(UnmanagedType.LPWStr)] string monitorID);
+
+            void SetBackgroundColor([MarshalAs(UnmanagedType.U4)] uint color);
+
+            [return: MarshalAs(UnmanagedType.U4)]
+            uint GetBackgroundColor();
+
             void SetPosition([MarshalAs(UnmanagedType.I4)] DesktopWallpaperPosition position);
             [return: MarshalAs(UnmanagedType.I4)]
             DesktopWallpaperPosition GetPosition();
+
+            void SetSlideshow(IntPtr items);
+            IntPtr GetSlideshow();
+
+            void SetSlideshowOptions(DesktopSlideshowDirection options, uint slideshowTick);
+            [PreserveSig]
+            uint GetSlideshowOptions(out DesktopSlideshowDirection options, out uint slideshowTick);
+
+            void AdvanceSlideshow([MarshalAs(UnmanagedType.LPWStr)] string monitorID, [MarshalAs(UnmanagedType.I4)] DesktopSlideshowDirection direction);
+
+            DesktopSlideshowDirection GetStatus();
+
             bool Enable();
         }
 
@@ -73,7 +119,7 @@ namespace NOM
             {
                 WallpaperAll.SetWallpaper(path);
             }
-            wallpaper.SetPosition(wallpaperPosition);   // wallpaper.SetPosition(DesktopWallpaper.DesktopWallpaperPosition.Fill);            
+            wallpaper.SetPosition(wallpaperPosition);   // wallpaper.SetPosition(DesktopWallpaper.DesktopWallpaperPosition.Fill)
             Marshal.ReleaseComObject(wallpaper);
         }
 
